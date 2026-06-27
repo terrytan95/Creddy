@@ -31,85 +31,351 @@ const ISSUER_ACCENTS = {
 };
 
 const TEMPLATE_CARDS = [
-  {
-    name: "Amex Business Platinum",
-    issuer: "Amex",
-    annualFee: 895,
-    resetType: "calendar",
-    resetDate: "",
-    sourceNote: "Benefits change often. Dell is now up to $1,150 with qualifying spend; this tracker keeps the user-requested $150 annual value as an editable seed.",
-    benefits: [
-      benefit("Hotel Credit", 600, "semi-annual", "$300 Jan-Jun and $300 Jul-Dec. Verify enrollment and prepaid Fine Hotels + Resorts/Hotel Collection terms."),
-      benefit("Indeed", 360, "quarterly", "Up to $90 per quarter in statement credits."),
-      benefit("Hilton", 200, "quarterly", "Up to $50 per quarter in Hilton purchases."),
-      benefit("Wireless", 120, "monthly", "$10 per month wireless statement credit."),
-      benefit("Airline Fee", 200, "annual", "Incidental airline fee credit after selecting an airline."),
-      benefit("CLEAR Plus", 209, "annual", "Up to $209 CLEAR Plus credit."),
-      benefit("ChatGPT Business", 300, "annual", "Verify current Amex offer terms before relying on this."),
-      benefit("Adobe", 250, "annual", "Verify current Adobe credit terms before relying on this."),
-      benefit("Dell", 150, "annual", "Seeded from request; current terms may be higher and spend-threshold based."),
-      benefit("Global Entry/TSA", 0, "perk", "Application fee credit perk."),
-      benefit("Cell phone protection", 0, "perk", "Coverage terms and deductibles apply.")
-    ]
-  },
-  {
-    name: "Amex Business Gold",
-    issuer: "Amex",
-    annualFee: 375,
-    resetType: "calendar",
-    resetDate: "",
-    sourceNote: "Seeded from request; verify current merchant enrollment and caps before relying on the amounts.",
-    benefits: [
-      benefit("FedEx/Grubhub/Office Supply", 240, "monthly", "$20 per month flexible business credit."),
-      benefit("Walmart+", 155, "monthly", "Monthly Walmart+ membership credit estimate."),
-      benefit("ChatGPT Business", 300, "annual", "Verify current Amex offer terms before relying on this."),
-      benefit("Squarespace", 150, "annual", "Verify current Squarespace credit terms before relying on this."),
-      benefit("Cell phone protection", 0, "perk", "Coverage terms and deductibles apply.")
-    ]
-  },
-  {
-    name: "Chase Ink Business Preferred",
-    issuer: "Chase",
-    annualFee: 95,
-    resetType: "anniversary",
-    resetDate: "",
-    sourceNote: "Seeded as perks-only per request. Chase has added DoorDash/DashPass style benefits on some Ink cards; add them if useful.",
-    benefits: [
-      benefit("Cell phone protection", 0, "perk", "Pay the phone bill with the card; coverage terms apply."),
-      benefit("No foreign transaction fees", 0, "perk", "Useful for international spend."),
-      benefit("Points earner", 0, "perk", "No use-it-or-lose-it recurring credits seeded.")
-    ]
-  },
-  {
-    name: "Chase Ink Business Premier",
-    issuer: "Chase",
-    annualFee: 195,
-    resetType: "anniversary",
-    resetDate: "",
-    sourceNote: "Seeded as perks-only per request.",
-    benefits: [
-      benefit("5% Lyft", 0, "perk", "5% total cash back on Lyft rides through Sep 2027 per request; verify current terms."),
-      benefit("Cell phone protection", 0, "perk", "Pay the phone bill with the card; coverage terms apply."),
-      benefit("No FX fees", 0, "perk", "Useful for international spend.")
-    ]
-  },
-  {
-    name: "Capital One Spark Cash Plus",
-    issuer: "Capital One",
-    annualFee: 150,
-    resetType: "anniversary",
-    resetDate: "",
-    sourceNote: "Annual fee refund requires $150k spend in the cardholder year.",
-    benefits: [
-      benefit("Annual Fee Refund", 150, "annual", "Refunded if you spend $150k in the cardholder year."),
-      benefit("5% hotels/cars", 0, "perk", "Via Capital One Travel."),
-      benefit("No FX fees", 0, "perk", "Useful for international spend.")
-    ]
-  }
+  template("Amex Platinum Card", "Amex", 895, "calendar", [
+    benefit("Hotel Credit", 600, "semi-annual", "Up to $300 Jan-Jun and $300 Jul-Dec on eligible prepaid Fine Hotels + Resorts or Hotel Collection bookings."),
+    benefit("Digital Entertainment", 300, "monthly", "Up to $25 per month on eligible digital entertainment subscriptions."),
+    benefit("Uber Cash", 200, "monthly", "Monthly Uber Cash after adding the card to Uber; December amount may differ."),
+    benefit("Airline Fee", 200, "annual", "Incidental airline fee credit after selecting an airline."),
+    benefit("CLEAR Plus", 209, "annual", "CLEAR Plus membership statement credit."),
+    benefit("Walmart+", 155, "monthly", "Monthly Walmart+ membership credit estimate."),
+    benefit("Global Entry/TSA", 0, "perk", "Application fee credit."),
+    benefit("Lounge Access", 0, "perk", "Centurion Lounge, Priority Pass Select enrollment, and partner lounge access terms apply.")
+  ]),
+  template("Amex Gold Card", "Amex", 325, "calendar", [
+    benefit("Dining Credit", 120, "monthly", "Up to $10 per month at eligible dining partners after enrollment."),
+    benefit("Uber Cash", 120, "monthly", "Up to $10 monthly Uber Cash after adding the card to Uber."),
+    benefit("Dunkin' Credit", 84, "monthly", "Up to $7 per month after enrollment."),
+    benefit("Resy Credit", 100, "semi-annual", "Up to $50 Jan-Jun and $50 Jul-Dec at eligible Resy restaurants after enrollment.")
+  ]),
+  template("Amex Green Card", "Amex", 150, "calendar", [
+    benefit("CLEAR Plus", 209, "annual", "CLEAR Plus membership statement credit."),
+    benefit("LoungeBuddy", 100, "annual", "LoungeBuddy statement credits."),
+    benefit("Trip Delay Insurance", 0, "perk", "Coverage terms apply.")
+  ]),
+  template("Blue Cash Preferred Card", "Amex", 95, "calendar", [
+    benefit("Disney Bundle", 84, "monthly", "Up to $7 per month back after spending on an eligible Disney Bundle subscription."),
+    benefit("Return Protection", 0, "perk", "Coverage terms apply.")
+  ]),
+  template("Blue Cash Everyday Card", "Amex", 0, "calendar", [
+    benefit("Disney Bundle", 84, "monthly", "Up to $7 per month back after spending on an eligible Disney Bundle subscription."),
+    benefit("Home Chef", 180, "monthly", "Up to $15 per month in statement credits on eligible Home Chef purchases.")
+  ]),
+  template("Delta SkyMiles Blue Amex", "Amex", 0, "calendar", [
+    benefit("Delta Pay With Miles", 0, "perk", "Use miles toward Delta flights when eligible."),
+    benefit("No Foreign Transaction Fees", 0, "perk", "Useful for international purchases.")
+  ]),
+  template("Delta SkyMiles Gold Amex", "Amex", 150, "calendar", [
+    benefit("Delta Stays", 100, "annual", "Annual Delta Stays statement credit."),
+    benefit("Delta Flight Credit", 200, "annual", "Earned after meeting the annual spend requirement."),
+    benefit("First Checked Bag", 0, "perk", "First checked bag free on eligible Delta flights.")
+  ]),
+  template("Delta SkyMiles Platinum Amex", "Amex", 350, "calendar", [
+    benefit("Delta Stays", 150, "annual", "Annual Delta Stays statement credit."),
+    benefit("Rideshare", 120, "monthly", "Up to $10 per month on eligible U.S. rideshare purchases after enrollment."),
+    benefit("Resy", 120, "monthly", "Up to $10 per month at eligible U.S. Resy restaurants after enrollment."),
+    benefit("Companion Certificate", 0, "perk", "Annual companion certificate terms apply.")
+  ]),
+  template("Delta SkyMiles Reserve Amex", "Amex", 650, "calendar", [
+    benefit("Delta Stays", 200, "annual", "Annual Delta Stays statement credit."),
+    benefit("Rideshare", 120, "monthly", "Up to $10 per month on eligible U.S. rideshare purchases after enrollment."),
+    benefit("Resy", 240, "monthly", "Up to $20 per month at eligible U.S. Resy restaurants after enrollment."),
+    benefit("Companion Certificate", 0, "perk", "Annual companion certificate terms apply."),
+    benefit("Delta Lounge Access", 0, "perk", "Sky Club access terms and visit limits apply.")
+  ]),
+  template("Hilton Honors Amex", "Amex", 0, "calendar", [
+    benefit("Hilton Silver Status", 0, "perk", "Complimentary Hilton Honors Silver status."),
+    benefit("No Foreign Transaction Fees", 0, "perk", "Useful for international hotel stays.")
+  ]),
+  template("Hilton Honors Surpass Amex", "Amex", 150, "calendar", [
+    benefit("Hilton Credit", 200, "quarterly", "Up to $50 per quarter at eligible Hilton properties."),
+    benefit("Hilton Gold Status", 0, "perk", "Complimentary Hilton Honors Gold status."),
+    benefit("Free Night Reward", 0, "perk", "Earn after meeting the annual spend requirement.")
+  ]),
+  template("Hilton Honors Aspire Amex", "Amex", 550, "calendar", [
+    benefit("Hilton Resort Credit", 400, "semi-annual", "Up to $200 Jan-Jun and $200 Jul-Dec at participating Hilton Resorts."),
+    benefit("Airline Fee", 200, "quarterly", "Up to $50 per quarter in eligible flight purchases."),
+    benefit("CLEAR Plus", 209, "annual", "CLEAR Plus membership statement credit."),
+    benefit("Free Night Reward", 0, "perk", "Annual free night reward terms apply."),
+    benefit("Hilton Diamond Status", 0, "perk", "Complimentary Hilton Honors Diamond status.")
+  ]),
+  template("Marriott Bonvoy Bevy Amex", "Amex", 250, "calendar", [
+    benefit("Marriott Gold Status", 0, "perk", "Complimentary Marriott Bonvoy Gold Elite status."),
+    benefit("Elite Night Credits", 0, "perk", "Automatic elite night credits."),
+    benefit("Free Night Award", 0, "perk", "Earn after meeting the annual spend requirement.")
+  ]),
+  template("Marriott Bonvoy Brilliant Amex", "Amex", 650, "calendar", [
+    benefit("Dining Credit", 300, "monthly", "Up to $25 per month at eligible restaurants worldwide."),
+    benefit("Free Night Award", 0, "perk", "Annual free night award terms apply."),
+    benefit("Marriott Platinum Status", 0, "perk", "Complimentary Marriott Bonvoy Platinum Elite status.")
+  ]),
+  template("Amex Business Platinum", "Amex", 895, "calendar", [
+    benefit("Hotel Credit", 600, "semi-annual", "$300 Jan-Jun and $300 Jul-Dec. Verify enrollment and prepaid Fine Hotels + Resorts/Hotel Collection terms."),
+    benefit("Dell", 1150, "annual", "Dell statement credits are spend-threshold based; verify current split and enrollment."),
+    benefit("Indeed", 360, "quarterly", "Up to $90 per quarter in statement credits."),
+    benefit("Hilton", 200, "quarterly", "Up to $50 per quarter in Hilton purchases."),
+    benefit("Wireless", 120, "monthly", "$10 per month wireless statement credit."),
+    benefit("Airline Fee", 200, "annual", "Incidental airline fee credit after selecting an airline."),
+    benefit("CLEAR Plus", 209, "annual", "Up to $209 CLEAR Plus credit."),
+    benefit("ChatGPT Business", 300, "annual", "Verify current Amex offer terms before relying on this."),
+    benefit("Adobe", 250, "annual", "Verify current Adobe credit terms before relying on this."),
+    benefit("Global Entry/TSA", 0, "perk", "Application fee credit perk."),
+    benefit("Cell Phone Protection", 0, "perk", "Coverage terms and deductibles apply.")
+  ]),
+  template("Amex Business Gold", "Amex", 375, "calendar", [
+    benefit("FedEx/Grubhub/Office Supply", 240, "monthly", "$20 per month flexible business credit."),
+    benefit("Walmart+", 155, "monthly", "Monthly Walmart+ membership credit estimate."),
+    benefit("ChatGPT Business", 300, "annual", "Verify current Amex offer terms before relying on this."),
+    benefit("Squarespace", 150, "annual", "Verify current Squarespace credit terms before relying on this."),
+    benefit("Cell Phone Protection", 0, "perk", "Coverage terms and deductibles apply.")
+  ]),
+  template("Graphite Business Cash Unlimited Card", "Amex", 95, "calendar", [
+    benefit("Expanded Buying Power", 0, "perk", "Flexible purchasing power terms apply."),
+    benefit("Cash Back Rewards", 0, "perk", "Cash-back earning card; no recurring use-it-or-lose-it credit seeded.")
+  ]),
+  template("Blue Business Cash Card", "Amex", 0, "calendar", [
+    benefit("Expanded Buying Power", 0, "perk", "Flexible purchasing power terms apply."),
+    benefit("Cash Back Rewards", 0, "perk", "Cash-back earning card; no recurring use-it-or-lose-it credit seeded.")
+  ]),
+  template("Blue Business Plus Card", "Amex", 0, "calendar", [
+    benefit("Expanded Buying Power", 0, "perk", "Flexible purchasing power terms apply."),
+    benefit("Membership Rewards", 0, "perk", "Points earning card; no recurring use-it-or-lose-it credit seeded.")
+  ]),
+  template("Business Green Rewards Card", "Amex", 95, "calendar", [
+    benefit("Membership Rewards", 0, "perk", "Points earning card; no recurring use-it-or-lose-it credit seeded."),
+    benefit("Expense Management Tools", 0, "perk", "Business tools and employee cards terms apply.")
+  ]),
+  template("Plum Card", "Amex", 250, "calendar", [
+    benefit("Early Pay Discount", 0, "perk", "Discount opportunity depends on payment timing."),
+    benefit("No Preset Spending Limit", 0, "perk", "Spending power adjusts with account history and other factors.")
+  ]),
+  template("Delta SkyMiles Gold Business Amex", "Amex", 150, "calendar", [
+    benefit("Delta Stays", 150, "annual", "Annual Delta Stays statement credit."),
+    benefit("Delta Flight Credit", 200, "annual", "Earned after meeting the annual spend requirement."),
+    benefit("First Checked Bag", 0, "perk", "First checked bag free on eligible Delta flights.")
+  ]),
+  template("Delta SkyMiles Platinum Business Amex", "Amex", 350, "calendar", [
+    benefit("Delta Stays", 200, "annual", "Annual Delta Stays statement credit."),
+    benefit("Rideshare", 120, "monthly", "Up to $10 per month on eligible U.S. rideshare purchases after enrollment."),
+    benefit("Resy", 120, "monthly", "Up to $10 per month at eligible U.S. Resy restaurants after enrollment."),
+    benefit("Companion Certificate", 0, "perk", "Annual companion certificate terms apply.")
+  ]),
+  template("Delta SkyMiles Reserve Business Amex", "Amex", 650, "calendar", [
+    benefit("Delta Stays", 250, "annual", "Annual Delta Stays statement credit."),
+    benefit("Rideshare", 120, "monthly", "Up to $10 per month on eligible U.S. rideshare purchases after enrollment."),
+    benefit("Resy", 240, "monthly", "Up to $20 per month at eligible U.S. Resy restaurants after enrollment."),
+    benefit("Companion Certificate", 0, "perk", "Annual companion certificate terms apply."),
+    benefit("Delta Lounge Access", 0, "perk", "Sky Club access terms and visit limits apply.")
+  ]),
+  template("Marriott Bonvoy Business Amex", "Amex", 125, "calendar", [
+    benefit("Free Night Award", 0, "perk", "Annual free night award terms apply."),
+    benefit("Marriott Gold Status", 0, "perk", "Complimentary Marriott Bonvoy Gold Elite status."),
+    benefit("Elite Night Credits", 0, "perk", "Automatic elite night credits.")
+  ]),
+  template("Hilton Honors Business Amex", "Amex", 195, "calendar", [
+    benefit("Hilton Credit", 240, "quarterly", "Up to $60 per quarter at eligible Hilton properties."),
+    benefit("Hilton Gold Status", 0, "perk", "Complimentary Hilton Honors Gold status."),
+    benefit("Free Night Reward", 0, "perk", "Earn after meeting the annual spend requirement.")
+  ]),
+  template("Lowe's Business Rewards Amex", "Amex", 0, "calendar", [
+    benefit("Lowe's Benefits", 0, "perk", "Lowe's business offers and purchase benefits vary."),
+    benefit("Expense Management Tools", 0, "perk", "Business tools and employee cards terms apply.")
+  ]),
+  template("Amazon Business Prime Amex", "Amex", 0, "calendar", [
+    benefit("Amazon Business Rewards", 0, "perk", "Rewards and payment-term options vary by Prime eligibility."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("Amazon Business Amex", "Amex", 0, "calendar", [
+    benefit("Amazon Business Rewards", 0, "perk", "Rewards and payment-term options vary."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("Chase Sapphire Preferred", "Chase", 95, "anniversary", [
+    benefit("Chase Travel Hotel Credit", 50, "annual", "Annual hotel credit for eligible hotel bookings through Chase Travel."),
+    benefit("DashPass", 0, "perk", "Complimentary DashPass benefit terms apply."),
+    benefit("Trip Protections", 0, "perk", "Trip cancellation/interruption and related protections terms apply.")
+  ]),
+  template("Chase Sapphire Reserve", "Chase", 795, "anniversary", [
+    benefit("Travel Credit", 300, "annual", "Annual travel credit."),
+    benefit("The Edit Credit", 500, "semi-annual", "Up to $250 Jan-Jun and $250 Jul-Dec for eligible The Edit bookings through Chase Travel."),
+    benefit("Apple TV+ and Apple Music", 250, "annual", "Promotional subscription benefit; verify current eligibility window."),
+    benefit("DoorDash Benefits", 300, "monthly", "DoorDash credits/promos are split by benefit type; verify current monthly terms."),
+    benefit("Priority Pass", 0, "perk", "Priority Pass Select membership terms apply."),
+    benefit("Global Entry/TSA/NEXUS", 0, "perk", "Application fee credit terms apply.")
+  ]),
+  template("Chase Freedom Unlimited", "Chase", 0, "calendar", [
+    benefit("DashPass", 0, "perk", "Complimentary DashPass benefit terms apply."),
+    benefit("Cash Back Rewards", 0, "perk", "Cash-back earning card; no recurring use-it-or-lose-it credit seeded.")
+  ]),
+  template("Chase Freedom Flex", "Chase", 0, "calendar", [
+    benefit("DashPass", 0, "perk", "Complimentary DashPass benefit terms apply."),
+    benefit("Quarterly Bonus Categories", 0, "perk", "Activate quarterly bonus categories when applicable.")
+  ]),
+  template("Chase Freedom Rise", "Chase", 0, "calendar", [
+    benefit("Cash Back Rewards", 0, "perk", "Starter cash-back card; no recurring use-it-or-lose-it credit seeded.")
+  ]),
+  template("Ink Business Unlimited", "Chase", 0, "anniversary", [
+    benefit("Cash Back Rewards", 0, "perk", "Business cash-back earning card; no recurring use-it-or-lose-it credit seeded."),
+    benefit("Employee Cards", 0, "perk", "Employee cards at no additional cost.")
+  ]),
+  template("Ink Business Cash", "Chase", 0, "anniversary", [
+    benefit("Cash Back Rewards", 0, "perk", "Business cash-back earning card; no recurring use-it-or-lose-it credit seeded."),
+    benefit("Employee Cards", 0, "perk", "Employee cards at no additional cost.")
+  ]),
+  template("Ink Business Preferred", "Chase", 95, "anniversary", [
+    benefit("Cell Phone Protection", 0, "perk", "Pay the phone bill with the card; coverage terms apply."),
+    benefit("No Foreign Transaction Fees", 0, "perk", "Useful for international spend."),
+    benefit("Points Earner", 0, "perk", "No use-it-or-lose-it recurring credits seeded.")
+  ]),
+  template("Ink Business Premier", "Chase", 195, "anniversary", [
+    benefit("5% Lyft", 0, "perk", "5% total cash back on Lyft rides through Sep 2027 per request; verify current terms."),
+    benefit("Cell Phone Protection", 0, "perk", "Pay the phone bill with the card; coverage terms apply."),
+    benefit("No Foreign Transaction Fees", 0, "perk", "Useful for international spend.")
+  ]),
+  template("Sapphire Reserve for Business", "Chase", 795, "anniversary", [
+    benefit("Travel Credit", 300, "annual", "Annual travel credit."),
+    benefit("The Edit Credit", 500, "semi-annual", "Up to $250 Jan-Jun and $250 Jul-Dec for eligible The Edit bookings through Chase Travel."),
+    benefit("Business Services Credits", 400, "annual", "Business service credits vary by partner and enrollment; verify current split."),
+    benefit("Priority Pass", 0, "perk", "Priority Pass Select membership terms apply."),
+    benefit("Global Entry/TSA/NEXUS", 0, "perk", "Application fee credit terms apply.")
+  ]),
+  template("United Gateway Card", "Chase", 0, "anniversary", [
+    benefit("United Benefits", 0, "perk", "United card travel and purchase benefits vary."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("United Explorer Card", "Chase", 150, "anniversary", [
+    benefit("United Hotels Credit", 100, "annual", "Annual United Hotels credit; verify current booking terms."),
+    benefit("United Club Passes", 0, "perk", "Two one-time United Club passes each account anniversary."),
+    benefit("First Checked Bag", 0, "perk", "First checked bag free on eligible United flights.")
+  ]),
+  template("United Quest Card", "Chase", 350, "anniversary", [
+    benefit("United Credit", 200, "annual", "Annual United purchase credit."),
+    benefit("United Hotels Credit", 150, "annual", "Annual United Hotels credit; verify current booking terms."),
+    benefit("Award Flight Credits", 0, "perk", "Award flight credit benefit terms apply."),
+    benefit("Checked Bags", 0, "perk", "Checked bag benefits apply on eligible United flights.")
+  ]),
+  template("United Club Card", "Chase", 695, "anniversary", [
+    benefit("United Hotels Credit", 200, "annual", "Annual United Hotels credit; verify current booking terms."),
+    benefit("United Club Membership", 0, "perk", "United Club membership terms apply."),
+    benefit("Checked Bags", 0, "perk", "Checked bag benefits apply on eligible United flights.")
+  ]),
+  template("United Business Card", "Chase", 150, "anniversary", [
+    benefit("United Credit", 125, "annual", "Annual United travel credit; verify current terms."),
+    benefit("United Club Passes", 0, "perk", "Two one-time United Club passes each account anniversary."),
+    benefit("First Checked Bag", 0, "perk", "First checked bag free on eligible United flights.")
+  ]),
+  template("United Club Business Card", "Chase", 695, "anniversary", [
+    benefit("United Club Membership", 0, "perk", "United Club membership terms apply."),
+    benefit("Checked Bags", 0, "perk", "Checked bag benefits apply on eligible United flights."),
+    benefit("Premier Access", 0, "perk", "Premier Access travel benefit terms apply.")
+  ]),
+  template("Southwest Rapid Rewards Plus", "Chase", 99, "anniversary", [
+    benefit("Anniversary Points", 0, "perk", "Anniversary points post each account year."),
+    benefit("EarlyBird Credits", 0, "perk", "EarlyBird Check-In benefit terms apply.")
+  ]),
+  template("Southwest Rapid Rewards Premier", "Chase", 149, "anniversary", [
+    benefit("Anniversary Points", 0, "perk", "Anniversary points post each account year."),
+    benefit("EarlyBird Credits", 0, "perk", "EarlyBird Check-In benefit terms apply."),
+    benefit("No Foreign Transaction Fees", 0, "perk", "Useful for international spend.")
+  ]),
+  template("Southwest Rapid Rewards Priority", "Chase", 229, "anniversary", [
+    benefit("Southwest Travel Credit", 75, "annual", "Annual Southwest travel credit."),
+    benefit("Upgraded Boardings", 0, "perk", "Four upgraded boardings per year when available."),
+    benefit("Anniversary Points", 0, "perk", "Anniversary points post each account year.")
+  ]),
+  template("Southwest Premier Business", "Chase", 149, "anniversary", [
+    benefit("Anniversary Points", 0, "perk", "Anniversary points post each account year."),
+    benefit("EarlyBird Credits", 0, "perk", "EarlyBird Check-In benefit terms apply.")
+  ]),
+  template("Southwest Performance Business", "Chase", 299, "anniversary", [
+    benefit("Global Entry/TSA/NEXUS", 0, "perk", "Application fee credit terms apply."),
+    benefit("Upgraded Boardings", 0, "perk", "Four upgraded boardings per year when available."),
+    benefit("Inflight Wi-Fi Credits", 0, "perk", "Inflight Wi-Fi credit terms apply.")
+  ]),
+  template("Marriott Bonvoy Bold", "Chase", 0, "anniversary", [
+    benefit("Marriott Silver Status", 0, "perk", "Complimentary Marriott Bonvoy Silver Elite status."),
+    benefit("Elite Night Credits", 0, "perk", "Automatic elite night credits.")
+  ]),
+  template("Marriott Bonvoy Boundless", "Chase", 95, "anniversary", [
+    benefit("Free Night Award", 0, "perk", "Annual free night award terms apply."),
+    benefit("Marriott Silver Status", 0, "perk", "Complimentary Marriott Bonvoy Silver Elite status."),
+    benefit("Elite Night Credits", 0, "perk", "Automatic elite night credits.")
+  ]),
+  template("Marriott Bonvoy Bountiful", "Chase", 250, "anniversary", [
+    benefit("Marriott Gold Status", 0, "perk", "Complimentary Marriott Bonvoy Gold Elite status."),
+    benefit("Elite Night Credits", 0, "perk", "Automatic elite night credits."),
+    benefit("Free Night Award", 0, "perk", "Earn after meeting the annual spend requirement.")
+  ]),
+  template("IHG One Rewards Traveler", "Chase", 0, "anniversary", [
+    benefit("IHG Silver Status", 0, "perk", "Complimentary IHG One Rewards Silver Elite status."),
+    benefit("Fourth Reward Night", 0, "perk", "Fourth night reward benefit terms apply.")
+  ]),
+  template("IHG One Rewards Premier", "Chase", 99, "anniversary", [
+    benefit("United TravelBank", 50, "annual", "Annual United TravelBank cash benefit; verify registration terms."),
+    benefit("Anniversary Free Night", 0, "perk", "Annual free night certificate terms apply."),
+    benefit("Global Entry/TSA/NEXUS", 0, "perk", "Application fee credit terms apply."),
+    benefit("IHG Platinum Status", 0, "perk", "Complimentary IHG One Rewards Platinum Elite status.")
+  ]),
+  template("IHG One Rewards Premier Business", "Chase", 99, "anniversary", [
+    benefit("United TravelBank", 50, "annual", "Annual United TravelBank cash benefit; verify registration terms."),
+    benefit("Anniversary Free Night", 0, "perk", "Annual free night certificate terms apply."),
+    benefit("Global Entry/TSA/NEXUS", 0, "perk", "Application fee credit terms apply."),
+    benefit("IHG Platinum Status", 0, "perk", "Complimentary IHG One Rewards Platinum Elite status.")
+  ]),
+  template("World of Hyatt Card", "Chase", 95, "anniversary", [
+    benefit("Free Night Award", 0, "perk", "Annual Category 1-4 free night terms apply."),
+    benefit("Hyatt Discoverist Status", 0, "perk", "Complimentary World of Hyatt Discoverist status."),
+    benefit("Elite Night Credits", 0, "perk", "Automatic elite night credits.")
+  ]),
+  template("World of Hyatt Business Card", "Chase", 199, "anniversary", [
+    benefit("Hyatt Credit", 100, "semi-annual", "Up to $50 twice each year in Hyatt statement credits."),
+    benefit("Hyatt Discoverist Status", 0, "perk", "Complimentary World of Hyatt Discoverist status."),
+    benefit("Elite Night Credits", 0, "perk", "Earn elite night credits through spend.")
+  ]),
+  template("Aeroplan Card", "Chase", 95, "anniversary", [
+    benefit("Global Entry/TSA/NEXUS", 0, "perk", "Application fee credit terms apply."),
+    benefit("First Checked Bag", 0, "perk", "First checked bag free on eligible Air Canada itineraries."),
+    benefit("Aeroplan Status", 0, "perk", "Automatic status benefit terms apply.")
+  ]),
+  template("Disney Inspire Visa", "Chase", 0, "anniversary", [
+    benefit("Disney Perks", 0, "perk", "Disney shopping, dining, photo, and vacation financing perks vary."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("Disney Premier Visa", "Chase", 49, "anniversary", [
+    benefit("Disney Perks", 0, "perk", "Disney shopping, dining, photo, and vacation financing perks vary."),
+    benefit("Disney Rewards", 0, "perk", "Earn Disney Rewards Dollars on eligible purchases.")
+  ]),
+  template("Disney Visa", "Chase", 0, "anniversary", [
+    benefit("Disney Perks", 0, "perk", "Disney shopping, dining, photo, and vacation financing perks vary."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("Prime Visa", "Chase", 0, "calendar", [
+    benefit("Amazon Rewards", 0, "perk", "Rewards rate depends on eligible Prime membership."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("Amazon Visa", "Chase", 0, "calendar", [
+    benefit("Amazon Rewards", 0, "perk", "Amazon rewards card; no recurring use-it-or-lose-it credit seeded."),
+    benefit("No Annual Fee", 0, "perk", "No annual fee card.")
+  ]),
+  template("Capital One Spark Cash Plus", "Capital One", 150, "anniversary", [
+    benefit("Annual Fee Refund", 150, "annual", "Refunded if you spend $150k in the cardholder year."),
+    benefit("5% hotels/cars", 0, "perk", "Via Capital One Travel."),
+    benefit("No FX fees", 0, "perk", "Useful for international spend.")
+  ], "Existing starter template kept from the first release.")
 ];
+
+const STARTER_CARD_NAMES = new Set([
+  "Amex Business Platinum",
+  "Amex Business Gold",
+  "Ink Business Preferred",
+  "Ink Business Premier",
+  "Capital One Spark Cash Plus"
+]);
 
 function benefit(name, value, cadence, note) {
   return { id: uid("benefit"), name, value, cadence, note, verify: false };
+}
+
+function template(name, issuer, annualFee, resetType, benefits, sourceNote = "Research snapshot from issuer catalogs on June 27, 2026. Verify current terms before relying on amounts.") {
+  return { name, issuer, annualFee, resetType, resetDate: "", sourceNote, benefits };
 }
 
 function uid(prefix) {
@@ -130,7 +396,7 @@ function cloneTemplate(template, suffix = "") {
 }
 
 function seedCards() {
-  return TEMPLATE_CARDS.map((template) => cloneTemplate(template));
+  return TEMPLATE_CARDS.filter((template) => STARTER_CARD_NAMES.has(template.name)).map((template) => cloneTemplate(template));
 }
 
 function randomCode() {
